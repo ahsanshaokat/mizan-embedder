@@ -1,0 +1,248 @@
+# mizan-embedder
+
+**Mizan-optimized Embedding Models for AI, Search, and RAG.**  
+`mizan-embedder` is the official embedding-model library in the **Mizan ecosystem**, designed to create *scale-aware*, *noise-resistant*, and *proportionally accurate* embeddings trained using the **Mizan Balance Function**.
+
+> **Proposed & Developed By:**  
+> **Ahsan Shaokat** — Computer Scientist & AI/ML Researcher  
+> Inventor of the **Mizan Balance Function** (2025)
+
+---
+
+# 🌟 Overview
+
+Modern embedding systems (MiniLM, MPNet, E5, etc.) use **cosine similarity**, which:
+
+- ❌ Ignores magnitude  
+- ❌ Fails with noisy or multi-scale embeddings  
+- ❌ Produces unstable rankings in RAG  
+- ❌ Forces L2-normalization (losing information)  
+
+**Mizan-Embedder fixes this** by training models specifically for:
+
+- ✔ **Mizan similarity** (scale-aware)  
+- ✔ **Proportional contrastive learning**  
+- ✔ **Chunk-length stable retrieval**  
+- ✔ **Large document embeddings**  
+- ✔ **Multimodal (text + images)**  
+
+This library enables you to build **your own embedding models**, optimized for the **MizanVector** search engine.
+
+---
+
+# 📦 Features
+
+### 🧠 **MizanEmbeddingModel-v1**
+- Transformer backbone (DistilBERT, MiniLM, BERT, or any HF model)
+- Projection head to target embedding dimension (e.g., 384)
+- Supports `mean`, `cls`, and `max` pooling
+- Optional L2 normalization (usually disabled for Mizan)
+
+### 🧰 **Utilities Included**
+- **Dataset utilities** for contrastive text pairs  
+- **Collate function** for fast tokenization  
+- **Inference wrapper** (`MizanTextEncoderWrapper`)  
+- **Example training script** (`train_text_contrastive.py`)
+
+### 🔌 **Integrates Seamlessly With:**
+- `mizanvector` (Memory store + Postgres pgvector)
+- `mizan-rag` (retrieval pipelines)
+- Any Python ML workflow
+
+---
+
+# 📁 Project Structure
+
+mizan-embedder/
+│
+├── mizan_embedder/
+│ ├── init.py
+│ ├── model.py # MizanEmbeddingModel + inference wrapper
+│ ├── data.py # Dataset + collate functions
+│
+├── train_text_contrastive.py # Example training script
+├── pyproject.toml # PyPI-ready config
+├── README.md
+└── LICENSE
+
+
+---
+
+# ⚙️ Installation
+
+From local repo:
+
+```bash
+pip install -e .
+🧱 Architecture
+🔹 MizanEmbeddingModel
+A transformer-based encoder with:
+
+Backbone (HuggingFace model)
+
+Projection layer → [hidden_size] → [embedding_dim]
+
+Pooling (mean, cls, max)
+
+Normalization (optional)
+
+Diagram:
+
+mathematica
+Input Text → Tokenizer → Transformer Backbone → Pooling → Projection → Embedding
+🔹 Why Projection?
+To unify embedding dimensions across:
+
+text models
+
+code models
+
+multimodal models
+
+future Mizan models
+
+🚀 Usage
+🔹 Load the encoder
+
+from mizan_embedder.model import MizanTextEncoderWrapper
+
+encoder = MizanTextEncoderWrapper(
+    backbone_name="distilbert-base-uncased",
+    emb_dim=384,
+    pooling="mean",
+    normalize=False,  # Mizan works best without normalization
+)
+
+vector = encoder.encode_one("Mizan is a scale-aware similarity function.")
+print(vector.shape)
+🧪 Training Your First Mizan Encoder
+Use the provided script:
+
+python train_text_contrastive.py
+This script:
+
+Loads text pairs
+
+Tokenizes them
+
+Trains with MizanContrastiveLoss
+
+Prints loss per epoch
+
+Example Training Code (simplified)
+
+from mizan_embedder.model import MizanEmbeddingModel
+from mizanvector.losses import MizanContrastiveLoss
+
+model = MizanEmbeddingModel(
+    backbone_name="distilbert-base-uncased",
+    emb_dim=384,
+    pooling="mean",
+)
+
+loss_fn = MizanContrastiveLoss()
+optimizer = torch.optim.AdamW(model.parameters(), lr=2e-5)
+
+for enc1, enc2, labels in loader:
+    emb1 = model(**enc1)
+    emb2 = model(**enc2)
+
+    loss = loss_fn(emb1, emb2, labels)
+    loss.backward()
+    optimizer.step()
+🔍 Contrastive Dataset Format
+Your dataset should consist of (text1, text2, label) pairs:
+
+Label = 1 → similar
+
+Label = 0 → not similar
+
+Example:
+
+pairs = [
+    ("what is mizan?", "mizan is a scale-aware similarity function", 1),
+    ("who invented mizan?", "Ahsan Shaokat proposed the Mizan Balance Function", 1),
+    ("cosine similarity", "apples are fruit", 0),
+]
+Dataset loader handles this automatically.
+
+🤖 Inference: Encoding Many Sentences
+
+texts = [
+    "Mizan is scale-aware.",
+    "Cosine ignores magnitude.",
+    "Apples are fruit.",
+]
+
+embs = encoder.encode(texts)
+print(embs.shape)  # e.g. torch.Size([3, 384])
+🔗 Integrating With mizanvector
+Example: full semantic search pipeline
+
+from mizanvector import MizanMemoryStore
+from mizan_embedder.model import MizanTextEncoderWrapper
+
+encoder = MizanTextEncoderWrapper()
+store = MizanMemoryStore(dim=384)
+
+docs = [
+    "Mizan Balance Function is scale-aware.",
+    "Cosine similarity uses only angle.",
+    "Ahsan Shaokat invented Mizan.",
+]
+
+embs = encoder.encode(docs)
+
+for doc, emb in zip(docs, embs):
+    store.add_document(content=doc, embedding=emb.tolist())
+
+query = "who created the mizan function?"
+q_emb = encoder.encode_one(query).tolist()
+
+results = store.search(q_emb, top_k=3, metric="mizan")
+
+for r in results:
+    print(r.score, r.content)
+🔥 Why Use Mizan-Based Embeddings?
+Problem in Cosine Models	Mizan Solution
+Loses magnitude info	Keeps scale meaningfully
+Sensitive to noise/outliers	Proportional + stable
+Long chunks score lower	Corrects length bias
+Normalized embeddings only	No normalization needed
+RAG retrieval unstable	Stable across chunk sizes
+Cosine ≠ semantic meaning	Mizan captures proportional similarity
+
+Mizan-optimized embeddings simply behave more naturally for real-world retrieval.
+
+🗺️ Roadmap
+Next Versions:
+✔ MizanTextEncoder-base-384
+STS/NLI-trained
+
+Released in mizan-models
+
+✔ MizanCodeEncoder-base
+CodeBERT-based
+
+Code ↔ docstring training
+
+✔ MizanMultimodalEncoder-v1
+CLIP-based
+
+Image ↔ text contrastive training
+
+✔ mizan-rag
+Full retrieval pipeline (chunking → embedding → storing → LLM answering)
+
+📜 License
+MIT License
+© 2025 Ahsan Shaokat
+
+🙌 Acknowledgements
+Special thanks to:
+
+HuggingFace transformers
+
+pgvector open-source community
+
+PyTorch developers

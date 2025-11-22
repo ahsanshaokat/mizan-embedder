@@ -1,0 +1,7 @@
+torch
+transformers
+mizanvector
+
+[dev]
+pytest
+datasets

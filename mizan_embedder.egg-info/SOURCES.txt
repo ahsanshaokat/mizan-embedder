@@ -1,0 +1,11 @@
+LICENSE
+README.md
+pyproject.toml
+mizan_embedder/__init__.py
+mizan_embedder/data.py
+mizan_embedder/model.py
+mizan_embedder.egg-info/PKG-INFO
+mizan_embedder.egg-info/SOURCES.txt
+mizan_embedder.egg-info/dependency_links.txt
+mizan_embedder.egg-info/requires.txt
+mizan_embedder.egg-info/top_level.txt

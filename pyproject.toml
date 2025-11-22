@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mizan-embedder"
+version = "0.2.2"
+description = "Mizan-optimized embedding model training"
+authors = [{name = "Ahsan Shaokat"}]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "torch",
+    "transformers",
+    "mizanvector",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "datasets"]

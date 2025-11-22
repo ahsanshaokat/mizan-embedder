@@ -26,7 +26,7 @@ Modern embedding systems (MiniLM, MPNet, E5, etc.) use **cosine similarity**, wh
 - ✔ **Large document embeddings**  
 - ✔ **Multimodal (text + images)**  
 
-This library enables you to build **your own embedding models**, optimized for the **MizanVector** search engine.
+This library enables you to build **your own embedding models**, optimized for the **mizan_vector** search engine.
 
 ---
 
@@ -45,7 +45,7 @@ This library enables you to build **your own embedding models**, optimized for t
 - **Example training script** (`train_text_contrastive.py`)
 
 ### 🔌 **Integrates Seamlessly With:**
-- `mizanvector` (Memory store + Postgres pgvector)
+- `mizan_vector` (Memory store + Postgres pgvector)
 - `mizan-rag` (retrieval pipelines)
 - Any Python ML workflow
 
@@ -132,7 +132,7 @@ Prints loss per epoch
 Example Training Code (simplified)
 
 from mizan_embedder.model import MizanEmbeddingModel
-from mizanvector.losses import MizanContrastiveLoss
+from mizan-vector.losses import MizanContrastiveLoss
 
 model = MizanEmbeddingModel(
     backbone_name="distilbert-base-uncased",
@@ -176,10 +176,10 @@ texts = [
 
 embs = encoder.encode(texts)
 print(embs.shape)  # e.g. torch.Size([3, 384])
-🔗 Integrating With mizanvector
+🔗 Integrating With mizan-vector
 Example: full semantic search pipeline
 
-from mizanvector import MizanMemoryStore
+from mizan-vector import MizanMemoryStore
 from mizan_embedder.model import MizanTextEncoderWrapper
 
 encoder = MizanTextEncoderWrapper()

@@ -13,7 +13,7 @@ requires-python = ">=3.9"
 dependencies = [
     "torch",
     "transformers",
-    "mizanvector",
+    "mizan-vector",
 ]
 
 [project.optional-dependencies]

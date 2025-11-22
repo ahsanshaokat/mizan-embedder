@@ -3,7 +3,7 @@ from torch.utils.data import DataLoader
 from transformers import AutoTokenizer
 from mizan_embedder.model import MizanEmbeddingModel
 from mizan_embedder.data import TextPairDataset, make_collate_fn
-from mizanvector.losses import MizanContrastiveLoss
+from mizan_vector.losses import MizanContrastiveLoss
 
 def main():
     model_name="distilbert-base-uncased"

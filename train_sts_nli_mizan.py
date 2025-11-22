@@ -7,7 +7,7 @@ Full training script for MizanEmbeddingModel-v1 using:
 - MNLI (entailment/contradiction)
 
 Requires:
-    pip install datasets transformers torch mizanvector mizan-embedder
+    pip install datasets transformers torch mizan_vector mizan-embedder
 """
 
 import random
@@ -18,7 +18,7 @@ from transformers import AutoTokenizer
 
 from mizan_embedder.model import MizanEmbeddingModel
 from mizan_embedder.data import TextPairDataset, make_collate_fn
-from mizanvector.losses import MizanContrastiveLoss
+from mizan_vector.losses import MizanContrastiveLoss
 
 
 # -------------------------------------------------------------

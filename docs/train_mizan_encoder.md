@@ -3,7 +3,7 @@
 This guide describes how to train a Mizan-based text encoder using:
 
 - `MizanEmbeddingModel`
-- `MizanContrastiveLoss` (from `mizanvector`)
+- `MizanContrastiveLoss` (from `mizan_vector`)
 - Real datasets like STS / NLI (via `datasets` library)
 
 Steps:

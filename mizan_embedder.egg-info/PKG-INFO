@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: mizan-embedder
-Version: 0.2.2
+Version: 0.2.4
 Summary: Mizan-optimized embedding model training
 Author: Ahsan Shaokat
 License: MIT
@@ -9,7 +9,7 @@ Description-Content-Type: text/markdown
 License-File: LICENSE
 Requires-Dist: torch
 Requires-Dist: transformers
-Requires-Dist: mizan_vector
+Requires-Dist: mizan-vector
 Provides-Extra: dev
 Requires-Dist: pytest; extra == "dev"
 Requires-Dist: datasets; extra == "dev"
@@ -149,7 +149,7 @@ Prints loss per epoch
 Example Training Code (simplified)
 
 from mizan_embedder.model import MizanEmbeddingModel
-from mizan_vector.losses import MizanContrastiveLoss
+from mizan-vector.losses import MizanContrastiveLoss
 
 model = MizanEmbeddingModel(
     backbone_name="distilbert-base-uncased",
@@ -193,10 +193,10 @@ texts = [
 
 embs = encoder.encode(texts)
 print(embs.shape)  # e.g. torch.Size([3, 384])
-🔗 Integrating With mizan_vector
+🔗 Integrating With mizan-vector
 Example: full semantic search pipeline
 
-from mizan_vector import MizanMemoryStore
+from mizan-vector import MizanMemoryStore
 from mizan_embedder.model import MizanTextEncoderWrapper
 
 encoder = MizanTextEncoderWrapper()

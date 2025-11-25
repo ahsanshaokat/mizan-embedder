@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mizan-embedder"
-version = "0.2.2"
+version = "0.2.4"
 description = "Mizan-optimized embedding model training"
 authors = [{name = "Ahsan Shaokat"}]
 license = {text = "MIT"}

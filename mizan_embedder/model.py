@@ -28,7 +28,10 @@ class MizanEmbeddingModel(nn.Module):
         super().__init__()
 
         self.backbone_name = backbone_name
-        self.backbone = AutoModel.from_pretrained(backbone_name)
+        self.backbone = AutoModel.from_pretrained(
+            backbone_name,
+            trust_remote_code=True
+            )
 
         hidden = self.backbone.config.hidden_size
         self.proj = nn.Linear(hidden, emb_dim)

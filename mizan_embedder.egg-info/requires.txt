@@ -1,6 +1,6 @@
 torch
 transformers
-mizan_vector
+mizan-vector
 
 [dev]
 pytest
